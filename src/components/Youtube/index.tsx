@@ -52,12 +52,14 @@ export function Youtube() {
 
     const player = new YT.Player(ref.current, {
       videoId: "M7lc1UVf-VE",
+      width: 0,
+      height: 0,
     });
 
     player.addEventListener("onReady", (event) => {
-      console.log(event);
+      console.log(event.target);
     });
   }, [ready]);
 
-  return <div ref={ref}></div>;
+  return <div className="w-full" style={{ aspectRatio: "16 / 9" }} ref={ref} />;
 }
