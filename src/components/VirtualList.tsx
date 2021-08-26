@@ -5,6 +5,7 @@ import React, {
   useState,
   useCallback,
 } from "react";
+import clsx from "clsx";
 
 function useScroll<T extends HTMLElement>(): [number, UIEventHandler<T>] {
   const [scrollTop, setScrollTop] = useState(0);
@@ -25,13 +26,15 @@ type VirtualListProps<T> = {
   rowHeight: number;
   visibleCount: number;
   list: T[];
-  children: (item: T) => ReactNode;
+  children?: (item: T) => ReactNode;
+  className?: string;
 };
 export function VirtualList<T>({
   rowHeight,
   visibleCount,
   list,
   children,
+  className,
 }: VirtualListProps<T>) {
   const [scrollTop, onScroll] = useScroll();
 
@@ -42,7 +45,7 @@ export function VirtualList<T>({
   return (
     <div
       style={{ height: viewportHeight + "px" }}
-      className="overflow-auto"
+      className={clsx("overflow-auto", className)}
       onScroll={onScroll}
     >
       <ul
@@ -52,11 +55,12 @@ export function VirtualList<T>({
           transform: `translateY(${startIndex * rowHeight}px)`,
         }}
       >
-        {Array.from({ length: visibleCount + 1 }, (_, index) => (
-          <li key={startIndex + index} style={{ height: rowHeight + "px" }}>
-            {children(list[startIndex + index])}
-          </li>
-        ))}
+        {children &&
+          Array.from({ length: visibleCount + 1 }, (_, index) => (
+            <li key={startIndex + index} style={{ height: rowHeight + "px" }}>
+              {children?.(list[startIndex + index])}
+            </li>
+          ))}
       </ul>
     </div>
   );

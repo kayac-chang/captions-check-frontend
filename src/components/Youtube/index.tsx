@@ -50,14 +50,10 @@ export function Youtube() {
   useEffect(() => {
     if (!ready || !ref.current) return;
 
-    const player = new YT.Player(ref.current, {
+    new YT.Player(ref.current, {
       videoId: "M7lc1UVf-VE",
       width: 0,
       height: 0,
-    });
-
-    player.addEventListener("onReady", (event) => {
-      console.log(event.target);
     });
   }, [ready]);
 
