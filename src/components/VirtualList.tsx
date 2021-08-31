@@ -45,7 +45,7 @@ export function VirtualList<T>({
   return (
     <div
       style={{ height: viewportHeight + "px" }}
-      className={clsx("overflow-auto", className)}
+      className="overflow-auto"
       onScroll={onScroll}
     >
       <ul
@@ -54,6 +54,7 @@ export function VirtualList<T>({
           willChange: "transform",
           transform: `translateY(${startIndex * rowHeight}px)`,
         }}
+        className={className}
       >
         {children &&
           Array.from({ length: visibleCount + 1 }, (_, index) => (
