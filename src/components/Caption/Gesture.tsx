@@ -20,10 +20,21 @@ const initialState: GestureState = {
 type GestureProps = {
   children?: (state: GestureState) => ReactNode;
   className?: string;
+  onPointerUp?: (state: GestureState) => void;
 };
-export function Gesture({ children, className }: GestureProps) {
+export function Gesture({ children, className, onPointerUp }: GestureProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<GestureState>(initialState);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    const observer = listen(ref.current)
+      //
+      .add("pointerup", () => onPointerUp?.(state));
+
+    return () => void observer.clear();
+  }, [state, onPointerUp]);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -44,6 +55,7 @@ export function Gesture({ children, className }: GestureProps) {
       })
       .add("pointerup", () => {
         initial = undefined;
+
         setState(initialState);
       });
 

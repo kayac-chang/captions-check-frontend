@@ -15,11 +15,11 @@ for (let id = 0; id < 10000; id++) {
 function App() {
   return (
     <YoutubeIframeAPIProvider>
-      <main>
+      <main className="max-h-screen overflow-hidden">
         <Youtube />
 
         <VirtualList
-          visibleCount={5}
+          visibleCount={6}
           rowHeight={80}
           list={list}
           className="py-4 flex flex-col gap-1"
